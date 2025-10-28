@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "Lossbeater",
+    "slug": "lossbeater",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "scheme": "lossbeater",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
