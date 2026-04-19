@@ -6,6 +6,7 @@ import { Bell } from 'lucide-react-native';
 import { useTheme } from '../../src/ui/theme/ThemeProvider';
 import { useTranslations } from '../../src/i18n';
 import { useMe } from '../../src/api/useMe';
+import { useSubscription } from '../../src/api/useSubscription';
 import { useStrategyPerformance } from '../../src/api/useStrategyPerformance';
 import { PeriodTabs } from '../../src/ui/home/PeriodTabs';
 import { StatGrid, accuracyTone, roiTone, type StatCell } from '../../src/ui/home/StatGrid';
@@ -14,7 +15,6 @@ import { TopPlayersCard } from '../../src/ui/home/TopPlayersCard';
 import { UpcomingPreviewCard } from '../../src/ui/home/UpcomingPreviewCard';
 import { RecentResultsCard } from '../../src/ui/home/RecentResultsCard';
 import { VotingTendenciesCard } from '../../src/ui/home/VotingTendenciesCard';
-import { BlurredContent } from '../../src/ui/subscription/BlurredContent';
 
 export default function Home() {
   const { colors } = useTheme();
@@ -22,6 +22,7 @@ export default function Home() {
   const [daysBack, setDaysBack] = useState(0);
 
   const me = useMe();
+  const sub = useSubscription();
   const perf = useStrategyPerformance(daysBack);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -34,9 +35,8 @@ export default function Home() {
     }
   }, [me, perf]);
 
-  const tier = (me.data?.entitlements?.tier as string | undefined) ?? 'free';
-  const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
-  const tierActive = me.data?.entitlements?.active === true;
+  const tierLabel = sub.tier.charAt(0).toUpperCase() + sub.tier.slice(1);
+  const tierActive = sub.isActive;
 
   const fallbackName = t('fallbackName');
   const firstName = useMemo(() => {
@@ -64,21 +64,15 @@ export default function Home() {
 
         <TitleRow daysBack={daysBack} setDaysBack={setDaysBack} />
 
-        <BlurredContent tier="plus" feature={t('sections.pickQuality')}>
-          <StatGrid cells={statCells} />
-        </BlurredContent>
+        <StatGrid cells={statCells} />
 
         <SectionLabel title={t('sections.pickQuality')} />
-        <BlurredContent tier="plus" feature={t('sections.pickQuality')}>
-          <PickQualityGauges data={perf.data ?? null} />
-        </BlurredContent>
+        <PickQualityGauges data={perf.data ?? null} />
 
         <SectionLabel title={t('sections.oddsBuckets')} />
         <OddsBucketGauges data={perf.data ?? null} />
 
-        <BlurredContent tier="plus" feature={t('sections.pickQuality')}>
-          <TopPlayersCard onViewAll={() => router.push('/(protected)/matches')} />
-        </BlurredContent>
+        <TopPlayersCard onViewAll={() => router.push('/(protected)/matches')} />
 
         <UpcomingPreviewCard onViewAll={() => router.push('/(protected)/matches')} />
 

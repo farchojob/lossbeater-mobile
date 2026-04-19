@@ -11,9 +11,12 @@ export type MeResponse = {
   language?: string | null;
   timezone?: string | null;
   entitlements?: {
-    tier?: 'free' | 'plus' | 'pro' | string;
-    active?: boolean;
+    tier?: 'free' | 'plus' | 'pro' | string | null;
+    plan?: string | null;
+    status?: 'active' | 'trial' | 'expired' | 'canceled' | 'none' | 'past_due' | 'inactive' | string | null;
     expiresAt?: string | null;
+    trialUsed?: boolean;
+    features?: Record<string, boolean> | null;
   } | null;
   coins?: {
     balance?: number;
