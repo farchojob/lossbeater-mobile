@@ -3,7 +3,10 @@ import { ClerkProvider } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
 import React from 'react';
 import { ThemeProvider, useTheme } from '../src/ui/theme/ThemeProvider';
+import { I18nProvider } from '../src/i18n';
+import { SwrProvider } from '../src/api/swr';
 import { View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const tokenCache = {
   async getToken(key: string) {
@@ -38,11 +41,17 @@ function RootStack() {
 
 export default function RootLayout() {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
-      <ThemeProvider>
-        <RootStack />
-      </ThemeProvider>
-    </ClerkProvider>
+    <SafeAreaProvider>
+      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+        <ThemeProvider>
+          <I18nProvider>
+            <SwrProvider>
+              <RootStack />
+            </SwrProvider>
+          </I18nProvider>
+        </ThemeProvider>
+      </ClerkProvider>
+    </SafeAreaProvider>
   );
 }
 

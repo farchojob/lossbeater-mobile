@@ -1,41 +1,58 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { Appearance, ColorSchemeName } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { emerald } from './colors';
+import { brand, semantic, slate } from './colors';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 type Palette = {
   background: string;
   surface: string;
+  surfaceMuted: string;
   textPrimary: string;
   textSecondary: string;
+  textMuted: string;
   primary: string;
   primaryText: string;
   border: string;
+  borderStrong: string;
+  danger: string;
+  success: string;
+  warning: string;
 };
 
+// Web light (.root): bg 210 40% 98%, card 0 0% 100%, primary #137FEC
 const lightPalette: Palette = {
-  background: '#f6f9ff',
+  background: '#f6f9fc',
   surface: '#ffffff',
+  surfaceMuted: '#eef2f6',
   textPrimary: '#0f172a',
-  textSecondary: '#475569',
-  // emerald-500 to match web `--primary: 160 84% 39%`
-  primary: emerald[500],
+  textSecondary: '#4a5668',
+  textMuted: '#7a8896',
+  primary: brand[500],
   primaryText: '#ffffff',
-  border: '#e5e7eb',
+  border: '#d4dbe0',
+  borderStrong: '#b9c1c9',
+  danger: semantic.danger,
+  success: semantic.success,
+  warning: semantic.warning,
 };
 
-// Emerald (shadcn-like) dark palette: near-black surfaces with emerald accents
+// Web dark (.dark): bg 210 36% 10%, card 210 33% 14%, border 210 18% 22%
 const darkPalette: Palette = {
-  // Exact colors requested
-  background: '#1a1d23', // app background
-  surface: '#1F2229',    // cards/surfaces
-  textPrimary: '#e6e9ef',
-  textSecondary: '#9aa3b2',
-  primary: emerald[500],
-  primaryText: '#031a13',
-  border: '#2a2f3a',
+  background: '#101922',
+  surface: '#182430',
+  surfaceMuted: '#1f2c38',
+  textPrimary: slate[50],
+  textSecondary: '#b0bcc8',
+  textMuted: '#6b7d8f',
+  primary: brand[500],
+  primaryText: '#ffffff',
+  border: slate[600],
+  borderStrong: '#3d4f5f',
+  danger: semantic.danger,
+  success: semantic.success,
+  warning: semantic.warning,
 };
 
 export type ThemeContextValue = {
@@ -67,18 +84,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return () => sub.remove();
   }, [mode]);
 
-  const effectiveScheme: ColorSchemeName = useMemo(() => (mode === 'system' ? Appearance.getColorScheme() : mode), [mode]);
+  const effectiveScheme: ColorSchemeName = useMemo(
+    () => (mode === 'system' ? Appearance.getColorScheme() : mode),
+    [mode]
+  );
   const colors = effectiveScheme === 'dark' ? darkPalette : lightPalette;
 
-  const value = useMemo<ThemeContextValue>(() => ({
-    mode,
-    systemScheme,
-    colors,
-    setMode: async (next: ThemeMode) => {
-      setModeState(next);
-      await SecureStore.setItemAsync(STORAGE_KEY, next);
-    },
-  }), [mode, systemScheme, colors]);
+  const value = useMemo<ThemeContextValue>(
+    () => ({
+      mode,
+      systemScheme,
+      colors,
+      setMode: async (next: ThemeMode) => {
+        setModeState(next);
+        await SecureStore.setItemAsync(STORAGE_KEY, next);
+      },
+    }),
+    [mode, systemScheme, colors]
+  );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
@@ -88,5 +111,3 @@ export function useTheme() {
   if (!ctx) throw new Error('useTheme must be used within ThemeProvider');
   return ctx;
 }
-
-

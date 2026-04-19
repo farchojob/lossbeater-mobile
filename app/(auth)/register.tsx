@@ -1,18 +1,69 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator } from 'react-native';
-import { useSignUp } from '@clerk/clerk-expo';
-import { useTheme } from '../../src/ui/theme/ThemeProvider';
+import React, { useEffect, useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { useSignUp, useSSO } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
+import * as AuthSession from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import type { OAuthStrategy } from '@clerk/types';
+import { useTheme } from '../../src/ui/theme/ThemeProvider';
+import { useTranslations } from '../../src/i18n';
+import { AuthShell } from '../../src/ui/auth/AuthShell';
+import {
+  AuthErrorBanner,
+  Divider,
+  PrimaryButton,
+  SocialButton,
+  TextField,
+} from '../../src/ui/auth/AuthPrimitives';
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function Register() {
-  const { isLoaded, signUp, setActive } = useSignUp();
   const { colors } = useTheme();
+  const { t } = useTranslations('auth');
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const { startSSOFlow } = useSSO();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [pendingVerification, setPendingVerification] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState<OAuthStrategy | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    WebBrowser.warmUpAsync();
+    return () => {
+      WebBrowser.coolDownAsync();
+    };
+  }, []);
+
+  const onOAuth = async (strategy: OAuthStrategy) => {
+    if (oauthLoading) return;
+    setError(null);
+    setOauthLoading(strategy);
+    try {
+      const redirectUrl = AuthSession.makeRedirectUri({
+        scheme: 'lossbeater',
+        path: 'oauth-native-callback',
+      });
+      const { createdSessionId, setActive: setActiveSSO } = await startSSOFlow({
+        strategy,
+        redirectUrl,
+      });
+      if (createdSessionId) {
+        await setActiveSSO?.({ session: createdSessionId });
+        router.replace('/(protected)');
+      }
+    } catch (e: any) {
+      const msg = e?.errors?.[0]?.message || e?.message || t('register.errors.oauthFailed');
+      setError(msg);
+      console.warn(`[OAuth ${strategy}] failed:`, msg, e);
+    } finally {
+      setOauthLoading(null);
+    }
+  };
 
   const onRegister = async () => {
     if (!isLoaded) return;
@@ -23,7 +74,7 @@ export default function Register() {
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
       setPendingVerification(true);
     } catch (e: any) {
-      setError(e?.errors?.[0]?.message || 'Registration failed');
+      setError(e?.errors?.[0]?.message || t('register.errors.registrationFailed'));
     } finally {
       setLoading(false);
     }
@@ -40,64 +91,96 @@ export default function Register() {
         router.replace('/(protected)');
       }
     } catch (e: any) {
-      setError(e?.errors?.[0]?.message || 'Invalid code');
+      setError(e?.errors?.[0]?.message || t('register.errors.invalidCode'));
     } finally {
       setLoading(false);
     }
   };
 
+  const footer = (
+    <Pressable onPress={() => router.replace('/(auth)/sign-in')} style={{ alignSelf: 'center' }}>
+      <Text style={{ color: colors.textSecondary, fontSize: 13 }}>
+        {t('register.alreadyAccount')}{' '}
+        <Text style={{ color: colors.primary, fontWeight: '700' }}>{t('register.signIn')}</Text>
+      </Text>
+    </Pressable>
+  );
+
+  if (pendingVerification) {
+    return (
+      <AuthShell
+        title={t('register.verify.title')}
+        subtitle={t('register.verify.subtitle')}
+        footer={footer}
+      >
+        <TextField
+          label={t('register.verify.codeLabel')}
+          value={code}
+          onChangeText={setCode}
+          keyboardType="number-pad"
+          placeholder={t('register.verify.codePlaceholder')}
+          autoComplete="one-time-code"
+        />
+        <AuthErrorBanner message={error} />
+        <View style={{ marginTop: 4 }}>
+          <PrimaryButton
+            label={loading ? t('register.verify.submitting') : t('register.verify.submit')}
+            onPress={onVerify}
+            loading={loading}
+          />
+        </View>
+      </AuthShell>
+    );
+  }
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24, backgroundColor: colors.background }}>
-      <View style={{ width: '100%', maxWidth: 380, gap: 14, padding: 24, borderRadius: 16, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border }}>
-        <Text style={{ fontSize: 26, fontWeight: '800', color: colors.textPrimary }}>Create account</Text>
+    <AuthShell
+      title={t('register.title')}
+      subtitle={t('register.subtitle')}
+      footer={footer}
+    >
+      <SocialButton
+        provider="google"
+        onPress={() => onOAuth('oauth_google')}
+        loading={oauthLoading === 'oauth_google'}
+        disabled={oauthLoading !== null}
+      />
+      <SocialButton
+        provider="apple"
+        onPress={() => onOAuth('oauth_apple')}
+        loading={oauthLoading === 'oauth_apple'}
+        disabled={oauthLoading !== null}
+      />
 
-        {!pendingVerification ? (
-          <>
-            <TextInput
-              autoCapitalize="none"
-              keyboardType="email-address"
-              placeholder="Email"
-              placeholderTextColor={colors.textSecondary}
-              value={email}
-              onChangeText={setEmail}
-              style={{ width: '100%', color: colors.textPrimary, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 10 }}
-            />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor={colors.textSecondary}
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-              style={{ width: '100%', color: colors.textPrimary, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 10 }}
-            />
-            <Pressable disabled={loading} onPress={onRegister} style={{ width: '100%', backgroundColor: colors.primary, paddingVertical: 14, borderRadius: 12, alignItems: 'center' }}>
-              {loading ? <ActivityIndicator color={colors.primaryText} /> : <Text style={{ color: colors.primaryText, fontSize: 16, fontWeight: '700' }}>Register</Text>}
-            </Pressable>
-            <Pressable onPress={() => router.replace('/(auth)/sign-in')} style={{ alignSelf: 'center', paddingVertical: 4 }}>
-              <Text style={{ color: colors.textSecondary }}>Already have an account? <Text style={{ color: colors.primary, fontWeight: '700' }}>Sign in</Text></Text>
-            </Pressable>
-          </>
-        ) : (
-          <>
-            <Text style={{ color: colors.textSecondary }}>We sent a verification code to {email}</Text>
-            <TextInput
-              placeholder="Verification code"
-              placeholderTextColor={colors.textSecondary}
-              value={code}
-              onChangeText={setCode}
-              keyboardType="number-pad"
-              style={{ width: '100%', color: colors.textPrimary, backgroundColor: colors.background, borderWidth: 1, borderColor: colors.border, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 10 }}
-            />
-            <Pressable disabled={loading} onPress={onVerify} style={{ width: '100%', backgroundColor: colors.primary, paddingVertical: 14, borderRadius: 12, alignItems: 'center' }}>
-              {loading ? <ActivityIndicator color={colors.primaryText} /> : <Text style={{ color: colors.primaryText, fontSize: 16, fontWeight: '700' }}>Verify & Continue</Text>}
-            </Pressable>
-          </>
-        )}
+      <Divider label="or" />
 
-        {error ? <Text style={{ color: '#ef4444' }}>{error}</Text> : null}
+      <TextField
+        label={t('register.emailLabel')}
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        autoComplete="email"
+        keyboardType="email-address"
+        placeholder={t('register.emailPlaceholder')}
+      />
+      <TextField
+        label={t('register.passwordLabel')}
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        autoComplete="new-password"
+        placeholder={t('register.passwordPlaceholder')}
+      />
+
+      <AuthErrorBanner message={error} />
+
+      <View style={{ marginTop: 4 }}>
+        <PrimaryButton
+          label={loading ? t('register.submitting') : t('register.submit')}
+          onPress={onRegister}
+          loading={loading}
+        />
       </View>
-    </View>
+    </AuthShell>
   );
 }
-
-
