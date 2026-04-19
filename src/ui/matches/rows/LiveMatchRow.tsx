@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, Text, View } from 'react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 import { useTheme } from '../../theme/ThemeProvider';
 import { useTranslations } from '../../../i18n';
 import { SetScoreGrid } from '../SetScoreGrid';
@@ -38,8 +38,18 @@ export function LiveMatchRow({ match, last }: { match: LiveMatch; last: boolean 
       }}
     >
       <View style={{ width: 44, alignItems: 'flex-start' }}>
-        <LiveBadge label={t('status.live').toUpperCase()} />
-
+        <Text
+          allowFontScaling={false}
+          style={{
+            color: colors.textPrimary,
+            fontSize: 12,
+            lineHeight: 15,
+            fontWeight: '700',
+            fontVariant: ['tabular-nums'],
+          }}
+        >
+          {formatTime(Number(match.time))}
+        </Text>
         <Text
           allowFontScaling={false}
           style={{
@@ -93,64 +103,13 @@ export function LiveMatchRow({ match, last }: { match: LiveMatch; last: boolean 
   );
 }
 
-function LiveBadge({ label }: { label: string }) {
-  const { colors } = useTheme();
-  const pulse = useRef(new Animated.Value(1)).current;
-  useEffect(() => {
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulse, {
-          toValue: 0.55,
-          duration: 700,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulse, {
-          toValue: 1,
-          duration: 700,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: true,
-        }),
-      ]),
-    );
-    loop.start();
-    return () => loop.stop();
-  }, [pulse]);
-  return (
-    <Animated.View
-      style={{
-        paddingHorizontal: 5,
-        paddingVertical: 1,
-        borderRadius: 3,
-        backgroundColor: colors.danger,
-        opacity: pulse,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 3,
-      }}
-    >
-      <View
-        style={{
-          width: 4,
-          height: 4,
-          borderRadius: 2,
-          backgroundColor: '#ffffff',
-        }}
-      />
-      <Text
-        allowFontScaling={false}
-        style={{
-          color: '#ffffff',
-          fontSize: 8,
-          lineHeight: 10,
-          fontWeight: '800',
-          letterSpacing: 0.6,
-        }}
-      >
-        {label}
-      </Text>
-    </Animated.View>
-  );
+function formatTime(ts: number): string {
+  if (!Number.isFinite(ts)) return '—';
+  const ms = ts < 1e12 ? ts * 1000 : ts;
+  const d = new Date(ms);
+  const hh = d.getHours().toString().padStart(2, '0');
+  const mm = d.getMinutes().toString().padStart(2, '0');
+  return `${hh}:${mm}`;
 }
 
 function isCompletedSet(homeStr: string, awayStr: string): boolean {
