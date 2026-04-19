@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Easing, Text, View } from 'react-native';
 import { useTheme } from '../../theme/ThemeProvider';
 import { useTranslations } from '../../../i18n';
 import { SetScoreGrid } from '../SetScoreGrid';
@@ -38,27 +38,8 @@ export function LiveMatchRow({ match, last }: { match: LiveMatch; last: boolean 
       }}
     >
       <View style={{ width: 44, alignItems: 'flex-start' }}>
-        <View
-          style={{
-            paddingHorizontal: 5,
-            paddingVertical: 1,
-            borderRadius: 3,
-            backgroundColor: colors.danger,
-          }}
-        >
-          <Text
-            allowFontScaling={false}
-            style={{
-              color: '#ffffff',
-              fontSize: 8,
-              lineHeight: 10,
-              fontWeight: '800',
-              letterSpacing: 0.6,
-            }}
-          >
-            {t('status.live').toUpperCase()}
-          </Text>
-        </View>
+        <LiveBadge label={t('status.live').toUpperCase()} />
+
         <Text
           allowFontScaling={false}
           style={{
@@ -109,6 +90,66 @@ export function LiveMatchRow({ match, last }: { match: LiveMatch; last: boolean 
         liveSetIndex={currentSetIdx}
       />
     </View>
+  );
+}
+
+function LiveBadge({ label }: { label: string }) {
+  const { colors } = useTheme();
+  const pulse = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, {
+          toValue: 0.55,
+          duration: 700,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: 700,
+          easing: Easing.inOut(Easing.quad),
+          useNativeDriver: true,
+        }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [pulse]);
+  return (
+    <Animated.View
+      style={{
+        paddingHorizontal: 5,
+        paddingVertical: 1,
+        borderRadius: 3,
+        backgroundColor: colors.danger,
+        opacity: pulse,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
+      }}
+    >
+      <View
+        style={{
+          width: 4,
+          height: 4,
+          borderRadius: 2,
+          backgroundColor: '#ffffff',
+        }}
+      />
+      <Text
+        allowFontScaling={false}
+        style={{
+          color: '#ffffff',
+          fontSize: 8,
+          lineHeight: 10,
+          fontWeight: '800',
+          letterSpacing: 0.6,
+        }}
+      >
+        {label}
+      </Text>
+    </Animated.View>
   );
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
+import { FlashText } from './FlashText';
 
 export type SetScore = { home: string; away: string };
 
@@ -73,18 +74,21 @@ function SetCell({
 }) {
   return (
     <View style={{ minWidth: 18, paddingHorizontal: 2 }}>
-      <ToneText tone={homeTone}>{home ?? '·'}</ToneText>
-      <ToneText tone={awayTone}>{away ?? '·'}</ToneText>
+      <ToneText tone={homeTone} value={home} />
+      <ToneText tone={awayTone} value={away} />
     </View>
   );
 }
 
-function ToneText({ tone, children }: { tone: Tone; children: React.ReactNode }) {
+function ToneText({ tone, value }: { tone: Tone; value: string | undefined }) {
   const { colors } = useTheme();
   const style = toneStyle(tone, colors);
   return (
-    <Text
-      allowFontScaling={false}
+    <FlashText
+      value={value ?? '·'}
+      baseBg={style.bg}
+      flashBg={colors.primary + '55'}
+      flashDurationMs={900}
       style={{
         color: style.color,
         fontSize: 11,
@@ -92,12 +96,9 @@ function ToneText({ tone, children }: { tone: Tone; children: React.ReactNode })
         fontWeight: style.weight,
         fontVariant: ['tabular-nums'],
         textAlign: 'center',
-        backgroundColor: style.bg,
         borderRadius: 3,
       }}
-    >
-      {children}
-    </Text>
+    />
   );
 }
 
