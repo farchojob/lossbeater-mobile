@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Zaten hesabınız var mı?",
       "logIn": "Giriş yap"
-    }
+    },
+    "home": "Ev",
+    "away": "Deplasman"
   },
   "navigation": {
     "dashboard": "Pano",
@@ -2278,6 +2280,14 @@
       "title": "Yaklasan Maclar",
       "noUpcoming": "Yaklasan mac yok",
       "viewing": "Goruntuleniyor"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Вже є акаунт?",
       "logIn": "Увійти"
-    }
+    },
+    "home": "Господар",
+    "away": "Гість"
   },
   "navigation": {
     "dashboard": "Панель",
@@ -2278,6 +2280,14 @@
       "title": "Майбутні матчі",
       "noUpcoming": "Майбутніх матчів немає",
       "viewing": "Перегляд"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

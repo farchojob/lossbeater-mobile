@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Vous avez déjà un compte?",
       "logIn": "Connexion"
-    }
+    },
+    "home": "Domicile",
+    "away": "Extérieur"
   },
   "navigation": {
     "dashboard": "Tableau de bord",
@@ -2279,6 +2281,14 @@
       "title": "Prochains Matchs",
       "noUpcoming": "Aucun match à venir",
       "viewing": "Affichage"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "PARI SÛR",
+      "valueBet": "VALUE BET",
+      "standard": "PARI STANDARD",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

@@ -2,9 +2,18 @@ import { Stack } from 'expo-router';
 import { ClerkProvider } from '@clerk/clerk-expo';
 import * as SecureStore from 'expo-secure-store';
 import React from 'react';
+import {
+  useFonts,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+} from '@expo-google-fonts/inter';
 import { ThemeProvider, useTheme } from '../src/ui/theme/ThemeProvider';
 import { I18nProvider } from '../src/i18n';
 import { SwrProvider } from '../src/api/swr';
+import { applyInterFontPatch } from '../src/ui/theme/interFontPatch';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -40,6 +49,17 @@ function RootStack() {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+  });
+
+  if (fontsLoaded) applyInterFontPatch();
+  if (!fontsLoaded) return null;
+
   return (
     <SafeAreaProvider>
       <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
@@ -54,5 +74,3 @@ export default function RootLayout() {
     </SafeAreaProvider>
   );
 }
-
-

@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Již máte účet?",
       "logIn": "Přihlásit se"
-    }
+    },
+    "home": "Domácí",
+    "away": "Hosté"
   },
   "navigation": {
     "dashboard": "Prehled",
@@ -2285,6 +2287,14 @@
       "title": "Nadchazejici zapasy",
       "noUpcoming": "Zadne nadchazejici zapasy",
       "viewing": "Zobrazuji"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

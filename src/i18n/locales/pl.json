@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Masz już konto?",
       "logIn": "Zaloguj się"
-    }
+    },
+    "home": "Gospodarz",
+    "away": "Gość"
   },
   "navigation": {
     "dashboard": "Pulpit",
@@ -2278,6 +2280,14 @@
       "title": "Nadchodzące Mecze",
       "noUpcoming": "Brak nadchodzących meczów",
       "viewing": "Przeglądanie"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

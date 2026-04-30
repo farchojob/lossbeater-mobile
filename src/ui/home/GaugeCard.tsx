@@ -60,29 +60,49 @@ export function GaugeCard({
           {title}
         </Text>
       </View>
-      <Gauge value={hasData ? accuracy : 0} color={accColor} track={colors.border} />
+      <Gauge
+        value={hasData ? accuracy : 0}
+        color={hasData ? accColor : colors.border}
+        track={colors.border}
+        muted={!hasData}
+      />
       <View style={{ alignItems: 'center', gap: 1 }}>
-        <Text
-          style={{
-            color: colors.textMuted,
-            fontSize: 10,
-            fontWeight: '600',
-            fontVariant: ['tabular-nums'],
-          }}
-        >
-          {hasData ? `${correct}/${total}` : '—'}
-        </Text>
-        {roi != null && (
+        {hasData ? (
+          <>
+            <Text
+              style={{
+                color: colors.textMuted,
+                fontSize: 10,
+                fontWeight: '600',
+                fontVariant: ['tabular-nums'],
+              }}
+            >
+              {correct}/{total}
+            </Text>
+            {roi != null && (
+              <Text
+                style={{
+                  color: roiColor(roi, colors),
+                  fontSize: 10,
+                  fontWeight: '800',
+                  fontVariant: ['tabular-nums'],
+                }}
+              >
+                {roi >= 0 ? '+' : ''}
+                {roi.toFixed(1)}% ROI
+              </Text>
+            )}
+          </>
+        ) : (
           <Text
             style={{
-              color: roiColor(roi, colors),
+              color: colors.textMuted,
               fontSize: 10,
-              fontWeight: '800',
-              fontVariant: ['tabular-nums'],
+              fontWeight: '700',
+              letterSpacing: 0.3,
             }}
           >
-            {roi >= 0 ? '+' : ''}
-            {roi.toFixed(1)}% ROI
+            No picks
           </Text>
         )}
         {subtitle && (
@@ -103,7 +123,17 @@ export function GaugeCard({
   );
 }
 
-function Gauge({ value, color, track }: { value: number; color: string; track: string }) {
+function Gauge({
+  value,
+  color,
+  track,
+  muted,
+}: {
+  value: number;
+  color: string;
+  track: string;
+  muted?: boolean;
+}) {
   const { colors } = useTheme();
   const size = 64;
   const strokeWidth = 6;
@@ -124,31 +154,33 @@ function Gauge({ value, color, track }: { value: number; color: string; track: s
           strokeWidth={strokeWidth}
           fill="none"
         />
-        <Circle
-          cx={cx}
-          cy={cy}
-          r={r}
-          stroke={color}
-          strokeWidth={strokeWidth}
-          strokeDasharray={`${circumference} ${circumference}`}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          fill="none"
-          rotation="-90"
-          origin={`${cx}, ${cy}`}
-        />
+        {!muted && (
+          <Circle
+            cx={cx}
+            cy={cy}
+            r={r}
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${circumference} ${circumference}`}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            fill="none"
+            rotation="-90"
+            origin={`${cx}, ${cy}`}
+          />
+        )}
       </Svg>
       <View style={{ position: 'absolute', alignItems: 'center' }}>
         <Text
           style={{
-            color: colors.textPrimary,
+            color: muted ? colors.textMuted : colors.textPrimary,
             fontSize: 13,
             fontWeight: '800',
             letterSpacing: -0.3,
             fontVariant: ['tabular-nums'],
           }}
         >
-          {value.toFixed(value < 10 ? 1 : 0)}%
+          {muted ? '—' : `${value.toFixed(value < 10 ? 1 : 0)}%`}
         </Text>
       </View>
     </View>

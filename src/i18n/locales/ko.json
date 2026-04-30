@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "이미 계정이 있으신가요?",
       "logIn": "로그인"
-    }
+    },
+    "home": "홈",
+    "away": "원정"
   },
   "navigation": {
     "dashboard": "대시보드",
@@ -2278,6 +2280,14 @@
       "title": "예정 경기",
       "noUpcoming": "예정 경기 없음",
       "viewing": "보는 중"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

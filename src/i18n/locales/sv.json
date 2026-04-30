@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Har du redan ett konto?",
       "logIn": "Logga in"
-    }
+    },
+    "home": "Hemma",
+    "away": "Borta"
   },
   "navigation": {
     "dashboard": "Instrumentpanel",
@@ -2278,6 +2280,14 @@
       "title": "Kommande matcher",
       "noUpcoming": "Inga kommande matcher",
       "viewing": "Visar"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

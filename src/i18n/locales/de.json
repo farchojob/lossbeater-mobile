@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Haben Sie bereits ein Konto?",
       "logIn": "Anmelden"
-    }
+    },
+    "home": "Heim",
+    "away": "Auswärts"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -2278,6 +2280,14 @@
       "title": "Bevorstehende Spiele",
       "noUpcoming": "Keine bevorstehenden Spiele",
       "viewing": "Anzeigen"
+    },
+    "pickQuality": {
+      "topPick": "TOP-TIPP",
+      "confidentPick": "SICHERER TIPP",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD-TIPP",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

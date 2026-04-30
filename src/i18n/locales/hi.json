@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "क्या पहले से खाता है?",
       "logIn": "लॉग इन"
-    }
+    },
+    "home": "होम",
+    "away": "अवे"
   },
   "navigation": {
     "dashboard": "डैशबोर्ड",
@@ -2278,6 +2280,14 @@
       "title": "आगामी मैच",
       "noUpcoming": "कोई आगामी मैच नहीं",
       "viewing": "देख रहे हैं"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

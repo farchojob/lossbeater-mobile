@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater fornece análises esportivas e previsões estatísticas para fins informativos.",
       "alreadyHaveAccount": "Já tem uma conta?",
       "logIn": "Entrar"
-    }
+    },
+    "home": "Casa",
+    "away": "Fora"
   },
   "navigation": {
     "dashboard": "Painel",
@@ -1594,6 +1596,14 @@
       "title": "Próximas Partidas",
       "noUpcoming": "Sem próximas partidas",
       "viewing": "Visualizando"
+    },
+    "pickQuality": {
+      "topPick": "APOSTA TOP",
+      "confidentPick": "APOSTA CONFIÁVEL",
+      "valueBet": "VALUE BET",
+      "standard": "APOSTA PADRÃO",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "profile": {

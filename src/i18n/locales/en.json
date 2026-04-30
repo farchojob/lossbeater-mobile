@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Already have an account?",
       "logIn": "Log In"
-    }
+    },
+    "home": "Home",
+    "away": "Away"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -435,12 +437,12 @@
       "edgePicks": "Edge Picks",
       "upsets": "Upsets",
       "correct": "correct",
-      "gradeElite": "Elite Picks",
-      "gradeStrong": "Strong Picks",
-      "gradeSafe": "Safe Picks",
+      "gradeElite": "Elite",
+      "gradeStrong": "Strong",
+      "gradeSafe": "Safe",
       "oddsHeavy": "Heavy Favs",
       "oddsValue": "Value Zone",
-      "oddsClose": "Close Matches"
+      "oddsClose": "Close"
     },
     "hotPicks": {
       "title": "Hot Picks",
@@ -609,6 +611,113 @@
     "outcome": {
       "correct": "Correct",
       "wrong": "Wrong"
+    },
+    "endOfList": "No more matches",
+    "comingSoon": "Coming soon",
+    "dates": {
+      "today": "Today",
+      "tomorrow": "Tomorrow"
+    },
+    "search": {
+      "placeholder": "Search players...",
+      "close": "Close"
+    },
+    "filters": {
+      "label": "Filters",
+      "selectFilters": "Select filters",
+      "apply": "Apply",
+      "clearAll": "Clear all",
+      "options": {
+        "qualityPicks": {
+          "label": "Quality picks",
+          "description": "Only matches graded Top or Confident by the model"
+        },
+        "valueBets": {
+          "label": "Value bets",
+          "description": "Positive-edge opportunities where model disagrees with market"
+        },
+        "recommendedBets": {
+          "label": "Recommended bets",
+          "description": "Matches with an active FIXA, STRONG, or VALUE recommendation"
+        },
+        "hotStreaks": {
+          "label": "Hot streaks",
+          "description": "At least one player on a 3+ match winning streak"
+        },
+        "clearFavorites": {
+          "label": "Clear favorites",
+          "description": "Strong odds favorites with wide market spread"
+        },
+        "h2hDominance": {
+          "label": "H2H dominance",
+          "description": "One player dominates head-to-head history"
+        },
+        "bestPerformance": {
+          "label": "Best performance",
+          "description": "Players with strong recent form and win rates"
+        }
+      }
+    },
+    "howTo": {
+      "title": "How to use Lossbeater",
+      "intro": "Lossbeater uses a 9-signal consensus system trained on 470K+ table tennis matches to detect anti-market edges. The system analyzes player form, head-to-head history, Glicko-2 ratings, and market odds across independent signals to generate consensus scores for every match.",
+      "readingTitle": "Reading the Match Cards",
+      "h2h": "H2H — Head-to-head record between the two players",
+      "form": "Form — Recent win/loss results (dots: green = win, red = loss, left = oldest)",
+      "odds": "Odds — Bookmaker odds for each player",
+      "matchWin": "Match Win % — Our signal consensus probability for each player to win",
+      "score": "Score — Live set-by-set scoring (on Live tab)",
+      "colorsTitle": "What the colored bar means",
+      "colorsIntro": "The left bar on a match row highlights the system's recommendation tier:",
+      "colorGreen": "Top Pick (Pro) — Highest-edge pick: 5+ signals agree, validated edge tier confirmed",
+      "colorBlue": "Confident / Strong (Pro) — Strong edge: 4+ signals agree, market direction confirmed",
+      "colorRed": "FIXA / Upset — High-confidence signal or strong upset detected",
+      "colorAmber": "Value Bet (Plus) — Our probability is higher than the bookmaker odds imply",
+      "colorEmerald": "LOCK — Edge tier: high-conviction lock pick",
+      "colorOrange": "HOT — Edge tier: player on a hot streak with edge",
+      "colorPurple": "H2H / ROLE — Edge tier: strong head-to-head or role advantage",
+      "close": "Got it"
+    },
+    "detail": {
+      "notFound": "Match not found",
+      "back": "Back",
+      "winner": "Match Winner",
+      "odds": "Odds",
+      "probability": "Probability",
+      "prediction": "Prediction",
+      "form": "Form",
+      "tabs": {
+        "overview": "Analysis",
+        "scores": "Scores",
+        "h2h": "H2H",
+        "chat": "Chat"
+      },
+      "role": {
+        "home": "Home",
+        "away": "Away"
+      },
+      "h2hBar": {
+        "label": "Last {shown} of {total} meetings"
+      },
+      "status": {
+        "live": "Live",
+        "finished": "Finished",
+        "scheduled": "Scheduled"
+      },
+      "scores": {
+        "empty": "No scores yet — match hasn't started."
+      },
+      "chat": {
+        "placeholder": "Say something...",
+        "empty": "No messages yet",
+        "beFirst": "Be the first to write something.",
+        "signInPrompt": "Sign in to join the chat.",
+        "sendError": "Couldn't send message",
+        "deleteTitle": "Delete message",
+        "deleteConfirm": "This can't be undone.",
+        "delete": "Delete",
+        "cancel": "Cancel"
+      }
     }
   },
   "profile": {
@@ -1993,6 +2102,7 @@
         "implied": "Implied:",
         "edge": "Edge",
         "matches": "matches",
+        "noPrediction": "No prediction",
         "narrativeStronglyFavors": "Our signal system strongly favors {name} to take the 1st set at {prob}%.",
         "narrativeModeratelyFavors": "Our signal system moderately favors {name} to take the 1st set at {prob}%.",
         "narrativeSlightlyFavors": "Our signal system slightly favors {name} to take the 1st set at {prob}%.",
@@ -2306,6 +2416,14 @@
       "title": "Upcoming Matches",
       "noUpcoming": "No upcoming matches",
       "viewing": "Viewing"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import useSWR from 'swr';
 import { useApi } from './hooks';
 
@@ -37,11 +37,17 @@ export function useUserFavorites() {
     { refreshInterval: 120_000 },
   );
 
-  const state = normalize(data);
+  const state = useMemo(() => normalize(data), [data]);
 
   const isFavoriteLeague = useCallback(
     (id: string | number) => state.leagues.includes(String(id)),
     [state.leagues],
+  );
+
+  const isFavoritePlayer = useCallback(
+    (id: string | number | null | undefined) =>
+      id != null && state.players.includes(String(id)),
+    [state.players],
   );
 
   const toggleLeague = useCallback(
@@ -66,11 +72,35 @@ export function useUserFavorites() {
     [state, request, mutate],
   );
 
+  const togglePlayer = useCallback(
+    async (playerId: string | number) => {
+      const id = String(playerId);
+      const isFav = state.players.includes(id);
+      const optimistic: FavoritesResponse = {
+        players: isFav ? state.players.filter((x) => x !== id) : [...state.players, id],
+        leagues: state.leagues,
+      };
+      mutate(optimistic, false);
+      try {
+        await request('/favorites/toggle', {
+          method: 'POST',
+          body: { type: 'player', id },
+        });
+        mutate();
+      } catch {
+        mutate();
+      }
+    },
+    [state, request, mutate],
+  );
+
   return {
     favoritePlayers: state.players,
     favoriteLeagues: state.leagues,
     isFavoriteLeague,
+    isFavoritePlayer,
     toggleLeague,
+    togglePlayer,
     isLoading,
     error,
   };

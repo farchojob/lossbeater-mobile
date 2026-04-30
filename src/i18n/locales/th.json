@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "มีบัญชีแล้ว?",
       "logIn": "เข้าสู่ระบบ"
-    }
+    },
+    "home": "เหย้า",
+    "away": "เยือน"
   },
   "navigation": {
     "dashboard": "แดชบอร์ด",
@@ -2278,6 +2280,14 @@
       "title": "การแข่งขันที่กำลังจะมา",
       "noUpcoming": "ไม่มีการแข่งขันที่กำลังจะมา",
       "viewing": "กำลังดู"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

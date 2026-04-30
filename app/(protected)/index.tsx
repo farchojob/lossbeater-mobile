@@ -1,16 +1,20 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Image, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Bell } from 'lucide-react-native';
+import { useUser } from '@clerk/clerk-expo';
 import { useTheme } from '../../src/ui/theme/ThemeProvider';
 import { useTranslations } from '../../src/i18n';
 import { useMe } from '../../src/api/useMe';
 import { useSubscription } from '../../src/api/useSubscription';
 import { useStrategyPerformance } from '../../src/api/useStrategyPerformance';
 import { PeriodTabs } from '../../src/ui/home/PeriodTabs';
-import { StatGrid, accuracyTone, roiTone, type StatCell } from '../../src/ui/home/StatGrid';
-import { PickQualityGauges, OddsBucketGauges } from '../../src/ui/home/GaugeRow';
+import { accuracyTone, roiTone } from '../../src/ui/home/StatGrid';
+import { HeroKpiRow, type HeroKpi } from '../../src/ui/home/HeroKpiRow';
+import { HeaderZone } from '../../src/ui/common/HeaderZone';
+import { SideDrawer } from '../../src/ui/common/SideDrawer';
+import { OddsBucketGauges } from '../../src/ui/home/GaugeRow';
 import { TopPlayersCard } from '../../src/ui/home/TopPlayersCard';
 import { UpcomingPreviewCard } from '../../src/ui/home/UpcomingPreviewCard';
 import { RecentResultsCard } from '../../src/ui/home/RecentResultsCard';
@@ -20,6 +24,7 @@ export default function Home() {
   const { colors } = useTheme();
   const { t } = useTranslations('dashboard');
   const [daysBack, setDaysBack] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const me = useMe();
   const sub = useSubscription();
@@ -35,8 +40,8 @@ export default function Home() {
     }
   }, [me, perf]);
 
-  const tierLabel = sub.tier.charAt(0).toUpperCase() + sub.tier.slice(1);
-  const tierActive = sub.isActive;
+  const { user: clerkUser } = useUser();
+  void sub;
 
   const fallbackName = t('fallbackName');
   const firstName = useMemo(() => {
@@ -44,13 +49,14 @@ export default function Home() {
     return String(name).split(/[\s@]/)[0] || fallbackName;
   }, [me.data, fallbackName]);
   const initial = firstName.charAt(0).toUpperCase();
+  const avatarUrl = clerkUser?.imageUrl ?? null;
 
-  const statCells = useMemo(() => buildStatCells(perf.data ?? null, t), [perf.data, t]);
+  const heroKpis = useMemo(() => buildHeroKpis(perf.data ?? null, t), [perf.data, t]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top']}>
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 120, gap: 16 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -60,26 +66,33 @@ export default function Home() {
           />
         }
       >
-        <TopBar initial={initial} firstName={firstName} tier={tierLabel} tierActive={tierActive} />
+        <HeaderZone>
+          <View style={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 16, gap: 14 }}>
+            <TopBar
+              initial={initial}
+              firstName={firstName}
+              avatarUrl={avatarUrl}
+              onOpenDrawer={() => setDrawerOpen(true)}
+            />
+            <TitleRow daysBack={daysBack} setDaysBack={setDaysBack} />
+            <HeroKpiRow kpis={heroKpis} />
+          </View>
+        </HeaderZone>
 
-        <TitleRow daysBack={daysBack} setDaysBack={setDaysBack} />
+        <View style={{ paddingHorizontal: 16, paddingTop: 16, gap: 16 }}>
+          <SectionLabel title={t('sections.oddsBuckets')} />
+          <OddsBucketGauges data={perf.data ?? null} />
 
-        <StatGrid cells={statCells} />
+          <TopPlayersCard onViewAll={() => router.push('/(protected)/matches')} />
 
-        <SectionLabel title={t('sections.pickQuality')} />
-        <PickQualityGauges data={perf.data ?? null} />
+          <UpcomingPreviewCard onViewAll={() => router.push('/(protected)/matches')} />
 
-        <SectionLabel title={t('sections.oddsBuckets')} />
-        <OddsBucketGauges data={perf.data ?? null} />
+          <RecentResultsCard onViewAll={() => router.push('/(protected)/matches')} />
 
-        <TopPlayersCard onViewAll={() => router.push('/(protected)/matches')} />
-
-        <UpcomingPreviewCard onViewAll={() => router.push('/(protected)/matches')} />
-
-        <RecentResultsCard onViewAll={() => router.push('/(protected)/matches')} />
-
-        <VotingTendenciesCard onViewAll={() => router.push('/(protected)/community')} />
+          <VotingTendenciesCard onViewAll={() => router.push('/(protected)/community')} />
+        </View>
       </ScrollView>
+      <SideDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </SafeAreaView>
   );
 }
@@ -87,32 +100,37 @@ export default function Home() {
 function TopBar({
   initial,
   firstName,
-  tier,
-  tierActive,
+  avatarUrl,
+  onOpenDrawer,
 }: {
   initial: string;
   firstName: string;
-  tier: string;
-  tierActive: boolean;
+  avatarUrl: string | null;
+  onOpenDrawer: () => void;
 }) {
   const { colors } = useTheme();
   const { t } = useTranslations('dashboard');
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
       <Pressable
-        onPress={() => router.push('/(protected)/profile')}
+        onPress={onOpenDrawer}
         hitSlop={8}
         style={({ pressed }) => ({
-          width: 34,
-          height: 34,
-          borderRadius: 17,
-          backgroundColor: colors.primary,
+          width: 32,
+          height: 32,
+          borderRadius: 16,
+          backgroundColor: avatarUrl ? colors.surfaceMuted : colors.primary,
           alignItems: 'center',
           justifyContent: 'center',
+          overflow: 'hidden',
           opacity: pressed ? 0.8 : 1,
         })}
       >
-        <Text style={{ color: colors.primaryText, fontSize: 14, fontWeight: '800' }}>{initial}</Text>
+        {avatarUrl ? (
+          <Image source={{ uri: avatarUrl }} style={{ width: 32, height: 32, borderRadius: 16 }} />
+        ) : (
+          <Text style={{ color: colors.primaryText, fontSize: 14, fontWeight: '800' }}>{initial}</Text>
+        )}
       </Pressable>
       <View style={{ flex: 1 }}>
         <Text
@@ -127,18 +145,17 @@ function TopBar({
         </Text>
         <Text
           numberOfLines={1}
-          style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '700', letterSpacing: -0.2 }}
+          style={{ color: colors.textPrimary, fontSize: 13, fontWeight: '700', letterSpacing: -0.2 }}
         >
           {firstName}
         </Text>
       </View>
-      <TierPill tier={tier} active={tierActive} />
       <Pressable
         onPress={() => router.push('/(protected)/profile')}
         hitSlop={8}
         style={({ pressed }) => ({
-          width: 34,
-          height: 34,
+          width: 32,
+          height: 32,
           borderRadius: 10,
           borderWidth: 1,
           borderColor: colors.border,
@@ -150,29 +167,6 @@ function TopBar({
       >
         <Bell size={16} color={colors.textSecondary} strokeWidth={2.2} />
       </Pressable>
-    </View>
-  );
-}
-
-function TierPill({ tier, active }: { tier: string; active: boolean }) {
-  const { colors } = useTheme();
-  const isPaid = active && tier.toLowerCase() !== 'free';
-  const bg = isPaid ? colors.primary : colors.surfaceMuted;
-  const fg = isPaid ? colors.primaryText : colors.textSecondary;
-  return (
-    <View
-      style={{
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        borderRadius: 999,
-        backgroundColor: bg,
-        borderWidth: 1,
-        borderColor: isPaid ? colors.primary : colors.border,
-      }}
-    >
-      <Text style={{ color: fg, fontSize: 10, fontWeight: '800', letterSpacing: 0.5 }}>
-        {tier.toUpperCase()}
-      </Text>
     </View>
   );
 }
@@ -189,7 +183,7 @@ function TitleRow({
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
       <Text
-        style={{ color: colors.textPrimary, fontSize: 20, fontWeight: '800', letterSpacing: -0.4 }}
+        style={{ color: colors.textPrimary, fontSize: 17, fontWeight: '800', letterSpacing: -0.3 }}
       >
         {t('title')}
       </Text>
@@ -216,44 +210,16 @@ function SectionLabel({ title }: { title: string }) {
   );
 }
 
-function buildStatCells(
+function buildHeroKpis(
   perf: ReturnType<typeof useStrategyPerformance>['data'],
   t: (key: string) => string,
-): StatCell[] {
+): HeroKpi[] {
   const mw = perf?.markets?.match_winner;
-  const tp = perf?.pick_quality?.top_pick;
-  const cp = perf?.pick_quality?.confident_pick;
-  const vbMw = perf?.value_bets?.match_winner;
-  const vbOu = perf?.value_bets?.over_under;
   const em = perf?.edge_metrics;
-
-  const vbTotal = (vbMw?.total ?? 0) + (vbOu?.total ?? 0);
-  const vbCorrect = (vbMw?.correct ?? 0) + (vbOu?.correct ?? 0);
-  const vbAcc = vbTotal > 0 ? (vbCorrect / vbTotal) * 100 : 0;
-
-  const leagueCount = mw?.by_league?.length ?? 0;
-
   return [
     { value: fmtInt(perf?.total_matches), label: t('stats.analyzed') },
     { value: fmtPct(mw?.accuracy), label: t('stats.matchWin'), tone: accuracyTone(mw?.accuracy ?? 0) },
-    { value: fmtPct(tp?.accuracy), label: t('stats.topPick'), tone: accuracyTone(tp?.accuracy ?? 0) },
-    {
-      value: fmtPct(cp?.accuracy),
-      label: t('stats.confident'),
-      tone: accuracyTone(cp?.accuracy ?? 0),
-    },
-    { value: fmtPct(vbAcc), label: t('stats.valueBet'), tone: accuracyTone(vbAcc) },
-    {
-      value: fmtPct(em?.edge_picks?.accuracy),
-      label: t('stats.edgePicks'),
-      tone: accuracyTone(em?.edge_picks?.accuracy ?? 0),
-    },
-    {
-      value: fmtRoi(em?.edge_roi),
-      label: t('stats.edgeRoi'),
-      tone: roiTone(em?.edge_roi ?? 0),
-    },
-    { value: String(leagueCount), label: t('stats.leagues') },
+    { value: fmtRoi(em?.edge_roi), label: t('stats.edgeRoi'), tone: roiTone(em?.edge_roi ?? 0) },
   ];
 }
 

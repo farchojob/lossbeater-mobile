@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Har du allerede en konto?",
       "logIn": "Logg inn"
-    }
+    },
+    "home": "Hjemme",
+    "away": "Borte"
   },
   "navigation": {
     "dashboard": "Dashbord",
@@ -2278,6 +2280,14 @@
       "title": "Kommende kamper",
       "noUpcoming": "Ingen kommende kamper",
       "viewing": "Viser"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Đã có tài khoản?",
       "logIn": "Đăng nhập"
-    }
+    },
+    "home": "Nhà",
+    "away": "Khách"
   },
   "navigation": {
     "dashboard": "Bảng điều khiển",
@@ -2278,6 +2280,14 @@
       "title": "Trận Sắp Diễn Ra",
       "noUpcoming": "Không có trận sắp diễn ra",
       "viewing": "Đang Xem"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

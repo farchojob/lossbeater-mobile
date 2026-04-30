@@ -47,10 +47,11 @@ export function SetScoreGrid({
         <View
           style={{
             marginLeft: 4,
-            paddingLeft: 6,
-            minWidth: 18,
+            paddingLeft: 5,
+            minWidth: 16,
             borderLeftWidth: 1,
             borderLeftColor: colors.border,
+            gap: 6,
           }}
         >
           <TotalCell value={homeSetWins} highlighted={homeLead} />
@@ -73,7 +74,7 @@ function SetCell({
   awayTone: Tone;
 }) {
   return (
-    <View style={{ minWidth: 18, paddingHorizontal: 2 }}>
+    <View style={{ minWidth: 16, paddingHorizontal: 2, gap: 6 }}>
       <ToneText tone={homeTone} value={home} />
       <ToneText tone={awayTone} value={away} />
     </View>
@@ -92,7 +93,7 @@ function ToneText({ tone, value }: { tone: Tone; value: string | undefined }) {
       style={{
         color: style.color,
         fontSize: 11,
-        lineHeight: 14,
+        lineHeight: 16,
         fontWeight: style.weight,
         fontVariant: ['tabular-nums'],
         textAlign: 'center',
@@ -110,8 +111,8 @@ function TotalCell({ value, highlighted }: { value: number; highlighted: boolean
       style={{
         color: highlighted ? colors.textPrimary : colors.textMuted,
         fontSize: 12,
-        lineHeight: 15,
-        fontWeight: '800',
+        lineHeight: 16,
+        fontWeight: '600',
         fontVariant: ['tabular-nums'],
         textAlign: 'center',
       }}
@@ -141,18 +142,18 @@ function resolveTone(
 
 function toneStyle(tone: Tone, colors: ReturnType<typeof useTheme>['colors']): {
   color: string;
-  weight: '500' | '600' | '700' | '800';
+  weight: '400' | '500' | '600' | '700' | '800';
   bg: string;
 } {
   switch (tone) {
     case 'won':
-      return { color: colors.success, weight: '800', bg: 'transparent' };
+      return { color: colors.success, weight: '600', bg: 'transparent' };
     case 'lost':
-      return { color: colors.danger, weight: '600', bg: 'transparent' };
+      return { color: colors.danger, weight: '400', bg: 'transparent' };
     case 'current':
-      return { color: colors.textPrimary, weight: '800', bg: colors.surfaceMuted };
+      return { color: colors.textPrimary, weight: '600', bg: colors.surfaceMuted };
     case 'pending':
     default:
-      return { color: colors.textMuted, weight: '600', bg: 'transparent' };
+      return { color: colors.textMuted, weight: '400', bg: 'transparent' };
   }
 }

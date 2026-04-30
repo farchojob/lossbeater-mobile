@@ -25,7 +25,8 @@ export type FinishedMatch = {
 export type FinishedMatchesResponse = {
   success?: boolean;
   data?: FinishedMatch[];
-  total?: number | null;
+  count?: number;
+  total_count?: number | null;
 };
 
 function todayYYYYMMDD(): string {

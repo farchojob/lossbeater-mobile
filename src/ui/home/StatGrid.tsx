@@ -50,7 +50,7 @@ export function StatGrid({ cells }: { cells: StatCell[] }) {
               numberOfLines={1}
               style={{
                 color: toneColor(cell.tone, colors),
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: '800',
                 letterSpacing: -0.2,
                 fontVariant: ['tabular-nums'],
@@ -62,7 +62,7 @@ export function StatGrid({ cells }: { cells: StatCell[] }) {
               numberOfLines={1}
               style={{
                 color: colors.textMuted,
-                fontSize: 9,
+                fontSize: 8,
                 fontWeight: '700',
                 letterSpacing: 0.4,
                 textTransform: 'uppercase',

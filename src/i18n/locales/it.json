@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "Hai già un account?",
       "logIn": "Accedi"
-    }
+    },
+    "home": "Casa",
+    "away": "Trasferta"
   },
   "navigation": {
     "dashboard": "Dashboard",
@@ -2278,6 +2280,14 @@
       "title": "Match Imminenti",
       "noUpcoming": "Nessun match imminente",
       "viewing": "Visualizzando"
+    },
+    "pickQuality": {
+      "topPick": "SCELTA TOP",
+      "confidentPick": "SCELTA SICURA",
+      "valueBet": "VALUE BET",
+      "standard": "SCELTA STANDARD",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

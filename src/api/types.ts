@@ -46,16 +46,59 @@ export type UpcomingMatch = {
       away_od?: string | number | null;
       favorite?: 'home' | 'away' | string | null;
     } | null;
+    handicap?: {
+      home_od?: string | number | null;
+      away_od?: string | number | null;
+      handicap?: string | number | null;
+    } | null;
+    overUnder?: {
+      over_od?: string | number | null;
+      under_od?: string | number | null;
+      handicap?: string | number | null;
+    } | null;
+    firstSet?: {
+      home_od?: string | number | null;
+      away_od?: string | number | null;
+    } | null;
   } | null;
   consolidatedPredictions?: {
     matchWinner?: {
       home_probability?: number | null;
       away_probability?: number | null;
     } | null;
+    firstSet?: {
+      home_probability?: number | null;
+      away_probability?: number | null;
+      confidence?: string | null;
+    } | null;
+    overUnder?: {
+      over_probability?: number | null;
+      under_probability?: number | null;
+      line?: string | number | null;
+    } | null;
     summary?: {
       pickQuality?: PickQuality | null;
       valueBet?: unknown;
     } | null;
+  } | null;
+  h2h_sets_analysis?: {
+    first_set_analysis?: Record<
+      string,
+      {
+        home_win_rate?: number | null;
+        away_win_rate?: number | null;
+        matches_analyzed?: number | null;
+      } | null
+    > | null;
+    total_points_analysis?: Record<
+      string,
+      {
+        matches_analyzed?: number | null;
+        avg_total_points?: number | null;
+        home_avg_points?: number | null;
+        away_avg_points?: number | null;
+      } | null
+    > | null;
   } | null;
 };
 
@@ -84,5 +127,5 @@ export type UpcomingMatchesResponse = {
   success?: boolean;
   data?: UpcomingMatch[];
   count?: number;
-  total?: number | null;
+  total_count?: number | null;
 };

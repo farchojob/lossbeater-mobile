@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater ofrece análisis deportivo y predicciones estadísticas con fines informativos.",
       "alreadyHaveAccount": "¿Ya tienes una cuenta?",
       "logIn": "Iniciar Sesión"
-    }
+    },
+    "home": "Local",
+    "away": "Visitante"
   },
   "navigation": {
     "dashboard": "Panel",
@@ -435,12 +437,12 @@
       "edgePicks": "Edge Picks",
       "upsets": "Upsets",
       "correct": "correctos",
-      "gradeElite": "Picks Elite",
-      "gradeStrong": "Picks Fuertes",
-      "gradeSafe": "Picks Seguros",
-      "oddsHeavy": "Favs Fuertes",
-      "oddsValue": "Zona Valor",
-      "oddsClose": "Partidos Cerrados"
+      "gradeElite": "Elite",
+      "gradeStrong": "Fuertes",
+      "gradeSafe": "Seguros",
+      "oddsHeavy": "Favs",
+      "oddsValue": "Valor",
+      "oddsClose": "Cerrados"
     },
     "hotPicks": {
       "title": "Mejores Picks",
@@ -589,6 +591,68 @@
     "outcome": {
       "correct": "Correcto",
       "wrong": "Incorrecto"
+    },
+    "endOfList": "No hay más partidos",
+    "comingSoon": "Próximamente",
+    "dates": {
+      "today": "Hoy",
+      "tomorrow": "Mañana"
+    },
+    "search": {
+      "placeholder": "Buscar jugadores...",
+      "close": "Cerrar"
+    },
+    "howTo": {
+      "title": "Cómo usar Lossbeater",
+      "intro": "Lossbeater utiliza un sistema de consenso de 9 señales entrenado con más de 470.000 partidos de tenis de mesa para detectar ventajas anti-mercado. El sistema analiza la forma del jugador, historial cara a cara, ratings Glicko-2 y cuotas del mercado a través de señales independientes para generar puntajes de consenso para cada partido.",
+      "readingTitle": "Lectura de las Tarjetas de Partido",
+      "h2h": "H2H — Récord cara a cara entre los dos jugadores",
+      "form": "Forma — Resultados recientes (puntos: verde = victoria, rojo = derrota, izquierda = más antiguo)",
+      "odds": "Cuotas — Cuotas de la casa de apuestas para cada jugador",
+      "matchWin": "% Victoria — Probabilidad de consenso de nuestras señales para cada jugador",
+      "score": "Marcador — Puntaje set por set en vivo (pestaña En Vivo)",
+      "close": "Entendido"
+    },
+    "detail": {
+      "notFound": "Partido no encontrado",
+      "back": "Atrás",
+      "winner": "Ganador del Partido",
+      "odds": "Cuotas",
+      "probability": "Probabilidad",
+      "prediction": "Predicción",
+      "form": "Forma",
+      "tabs": {
+        "overview": "Análisis",
+        "scores": "Marcador",
+        "h2h": "H2H",
+        "chat": "Chat"
+      },
+      "role": {
+        "home": "Local",
+        "away": "Visitante"
+      },
+      "h2hBar": {
+        "label": "Últimos {shown} de {total} encuentros"
+      },
+      "status": {
+        "live": "En vivo",
+        "finished": "Finalizado",
+        "scheduled": "Próximamente"
+      },
+      "scores": {
+        "empty": "Aún no hay marcador — el partido no ha comenzado."
+      },
+      "chat": {
+        "placeholder": "Escribe algo...",
+        "empty": "Aún no hay mensajes",
+        "beFirst": "Sé el primero en escribir.",
+        "signInPrompt": "Inicia sesión para entrar al chat.",
+        "sendError": "No se pudo enviar",
+        "deleteTitle": "Eliminar mensaje",
+        "deleteConfirm": "Esta acción no se puede deshacer.",
+        "delete": "Eliminar",
+        "cancel": "Cancelar"
+      }
     }
   },
   "profile": {
@@ -1973,6 +2037,7 @@
         "implied": "Implícita:",
         "edge": "Ventaja",
         "matches": "partidos",
+        "noPrediction": "Sin predicción",
         "narrativeStronglyFavors": "Nuestro modelo favorece fuertemente a {name} para ganar el 1er set con un {prob}%.",
         "narrativeModeratelyFavors": "Nuestro modelo favorece moderadamente a {name} para ganar el 1er set con un {prob}%.",
         "narrativeSlightlyFavors": "Nuestro modelo favorece ligeramente a {name} para ganar el 1er set con un {prob}%.",
@@ -2286,6 +2351,14 @@
       "title": "Próximos Partidos",
       "noUpcoming": "Sin próximos partidos",
       "viewing": "Viendo"
+    },
+    "pickQuality": {
+      "topPick": "APUESTA TOP",
+      "confidentPick": "APUESTA SEGURA",
+      "valueBet": "APUESTA VALOR",
+      "standard": "APUESTA ESTÁNDAR",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

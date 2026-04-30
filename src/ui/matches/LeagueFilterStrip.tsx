@@ -16,9 +16,15 @@ type Props = {
   selected: string;
   onChange: (id: string) => void;
   status: MatchStatus;
+  activeLeagueIds?: ReadonlySet<string> | null;
 };
 
-export function LeagueFilterStrip({ selected, onChange, status }: Props) {
+export function LeagueFilterStrip({
+  selected,
+  onChange,
+  status,
+  activeLeagueIds,
+}: Props) {
   const { t } = useTranslations('matches');
   const { leagues } = useLeagues();
   const { isFavoriteLeague, toggleLeague } = useUserFavorites();
@@ -27,18 +33,19 @@ export function LeagueFilterStrip({ selected, onChange, status }: Props) {
     status === 'live' ? 'live' : status === 'finished' ? 'finished' : 'upcoming';
 
   const sorted = useMemo<ActiveLeague[]>(() => {
-    return [...leagues]
-      .filter((lg) => (lg[countKey] ?? 0) > 0)
-      .sort((a, b) => {
-        const af = isFavoriteLeague(a.id) ? 1 : 0;
-        const bf = isFavoriteLeague(b.id) ? 1 : 0;
-        if (af !== bf) return bf - af;
-        const oa = getLeagueSortKey(a.id);
-        const ob = getLeagueSortKey(b.id);
-        if (oa !== ob) return oa - ob;
-        return (b[countKey] ?? 0) - (a[countKey] ?? 0);
-      });
-  }, [leagues, isFavoriteLeague, countKey]);
+    const pool = activeLeagueIds
+      ? leagues.filter((lg) => activeLeagueIds.has(String(lg.id)))
+      : leagues.filter((lg) => (lg[countKey] ?? 0) > 0);
+    return [...pool].sort((a, b) => {
+      const af = isFavoriteLeague(a.id) ? 1 : 0;
+      const bf = isFavoriteLeague(b.id) ? 1 : 0;
+      if (af !== bf) return bf - af;
+      const oa = getLeagueSortKey(a.id);
+      const ob = getLeagueSortKey(b.id);
+      if (oa !== ob) return oa - ob;
+      return (b[countKey] ?? 0) - (a[countKey] ?? 0);
+    });
+  }, [leagues, isFavoriteLeague, countKey, activeLeagueIds]);
 
   return (
     <View style={{ height: STRIP_HEIGHT, justifyContent: 'center' }}>
@@ -64,10 +71,9 @@ export function LeagueFilterStrip({ selected, onChange, status }: Props) {
               active={selected === id}
               label={lg.name}
               flag={LEAGUE_FLAGS[id]}
-              count={lg[countKey] ?? 0}
               favorite={isFavoriteLeague(lg.id)}
               onPress={() => onChange(id)}
-              onLongPress={() => toggleLeague(lg.id)}
+              onToggleFavorite={() => toggleLeague(lg.id)}
             />
           );
         })}
@@ -80,29 +86,31 @@ function Pill({
   active,
   label,
   flag,
-  count,
   favorite,
   onPress,
-  onLongPress,
+  onToggleFavorite,
 }: {
   active: boolean;
   label: string;
   flag?: string;
-  count?: number;
   favorite?: boolean;
   onPress: () => void;
-  onLongPress?: () => void;
+  onToggleFavorite?: () => void;
 }) {
   const { colors } = useTheme();
+  const starColor = active
+    ? colors.primaryText
+    : favorite
+      ? colors.warning
+      : colors.textMuted;
   return (
     <Pressable
       onPress={onPress}
-      onLongPress={onLongPress}
-      delayLongPress={350}
       hitSlop={4}
       style={({ pressed }) => ({
         height: PILL_HEIGHT,
-        paddingHorizontal: 12,
+        paddingLeft: onToggleFavorite ? 8 : 12,
+        paddingRight: 12,
         borderRadius: 8,
         flexDirection: 'row',
         alignItems: 'center',
@@ -114,13 +122,23 @@ function Pill({
         opacity: pressed ? 0.75 : 1,
       })}
     >
-      {favorite && (
-        <Star
-          size={11}
-          color={active ? colors.primaryText : colors.warning}
-          fill={active ? colors.primaryText : colors.warning}
-          strokeWidth={2}
-        />
+      {onToggleFavorite && (
+        <Pressable
+          onPress={onToggleFavorite}
+          hitSlop={8}
+          style={({ pressed }) => ({
+            opacity: pressed ? 0.5 : 1,
+            paddingHorizontal: 2,
+            paddingVertical: 4,
+          })}
+        >
+          <Star
+            size={11}
+            color={starColor}
+            fill={favorite ? starColor : 'transparent'}
+            strokeWidth={2}
+          />
+        </Pressable>
       )}
       {flag && (
         <Text allowFontScaling={false} style={{ fontSize: 13, lineHeight: 15 }}>
@@ -139,33 +157,6 @@ function Pill({
       >
         {label}
       </Text>
-      {typeof count === 'number' && count > 0 && (
-        <View
-          style={{
-            paddingHorizontal: 6,
-            paddingVertical: 1,
-            borderRadius: 999,
-            backgroundColor: active
-              ? 'rgba(255,255,255,0.2)'
-              : colors.background,
-            minWidth: 20,
-            alignItems: 'center',
-          }}
-        >
-          <Text
-            allowFontScaling={false}
-            style={{
-              color: active ? colors.primaryText : colors.textMuted,
-              fontSize: 10,
-              lineHeight: 12,
-              fontWeight: '800',
-              fontVariant: ['tabular-nums'],
-            }}
-          >
-            {count}
-          </Text>
-        </View>
-      )}
     </Pressable>
   );
 }

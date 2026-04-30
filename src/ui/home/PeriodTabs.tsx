@@ -22,16 +22,18 @@ export function PeriodTabs({
 }) {
   const { colors } = useTheme();
   const { t } = useTranslations('dashboard');
+  const isDark = colors.background === '#101922';
+  const trackBg = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)';
+  const inactiveText = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(15,23,42,0.6)';
   return (
     <View
       style={{
         flexDirection: 'row',
-        backgroundColor: colors.surfaceMuted,
-        borderWidth: 1,
-        borderColor: colors.border,
+        backgroundColor: trackBg,
         borderRadius: 10,
         padding: 3,
         alignItems: 'center',
+        gap: 2,
       }}
     >
       {PERIOD_OPTIONS.map((opt) => {
@@ -42,7 +44,7 @@ export function PeriodTabs({
             onPress={() => onChange(opt.value)}
             style={({ pressed }) => ({
               paddingHorizontal: 10,
-              paddingVertical: 5,
+              paddingVertical: 6,
               borderRadius: 7,
               backgroundColor: selected ? colors.primary : 'transparent',
               opacity: pressed ? 0.7 : 1,
@@ -50,9 +52,9 @@ export function PeriodTabs({
           >
             <Text
               style={{
-                color: selected ? colors.primaryText : colors.textSecondary,
+                color: selected ? '#ffffff' : inactiveText,
                 fontSize: 11,
-                fontWeight: '700',
+                fontWeight: '800',
                 letterSpacing: 0.2,
               }}
             >

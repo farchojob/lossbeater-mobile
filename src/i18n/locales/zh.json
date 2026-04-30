@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "已有账户？",
       "logIn": "登录"
-    }
+    },
+    "home": "主队",
+    "away": "客队"
   },
   "navigation": {
     "dashboard": "仪表盘",
@@ -2278,6 +2280,14 @@
       "title": "即将进行的比赛",
       "noUpcoming": "暂无即将进行的比赛",
       "viewing": "正在查看"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {

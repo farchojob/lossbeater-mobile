@@ -44,7 +44,9 @@
       "disclaimer": "TT Lossbeater provides sports analytics and statistical predictions for informational purposes.",
       "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
       "logIn": "ログイン"
-    }
+    },
+    "home": "ホーム",
+    "away": "アウェイ"
   },
   "navigation": {
     "dashboard": "ダッシュボード",
@@ -2278,6 +2280,14 @@
       "title": "直近の試合",
       "noUpcoming": "直近の試合はありません",
       "viewing": "表示中"
+    },
+    "pickQuality": {
+      "topPick": "TOP PICK",
+      "confidentPick": "CONFIDENT PICK",
+      "valueBet": "VALUE BET",
+      "standard": "STANDARD PICK",
+      "confirmPick": "CONFIRM PICK",
+      "contradictPick": "CONTRADICT PICK"
     }
   },
   "docs": {
